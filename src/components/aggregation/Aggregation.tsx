@@ -1,8 +1,8 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import moment from 'moment';
 import "./index.css";
 
-import { ItemType, ListProps } from "./ItemType.ts";
+import {ItemType, ListProps} from "./ItemType.ts";
 import {withSort} from "./hoc/withSort.tsx";
 
 
@@ -18,7 +18,7 @@ const YearTable: React.FC<ListProps> = (props) => {
 					<th>Amount</th>
 				</tr>
 				{props.list.map(item => (
-					<tr>
+					<tr key={item.id}>
 						<td>{item.year}</td>
 						<td>{item.amount}</td>
 					</tr>
@@ -40,7 +40,7 @@ const SortTable: React.FC<ListProps> = (props) => {
 					<th>Amount</th>
 				</tr>
 				{props.list.map(item => (
-					<tr>
+					<tr key={item.id}>
 						<td>{item.date}</td>
 						<td>{item.amount}</td>
 					</tr>
@@ -62,7 +62,7 @@ const MonthTable: React.FC<ListProps> = (props) => {
 					<th>Amount</th>
 				</tr>
 				{props.list.map(item => (
-					<tr>
+					<tr key={item.id}>
 						<td>{item.month}</td>
 						<td>{item.amount}</td>
 					</tr>
@@ -77,9 +77,11 @@ const updateItemType = (item: ItemType): ItemType => {
 	return {
 		...item,
 		year: moment(dateObject).format('YYYY'),
+		monthNumber: moment(dateObject).month(),
 		month: moment(dateObject).format('MMMM'),
 	};
 };
+
 
 const Aggregation: React.FC<ListProps> = () => {
 	const  [list, setList] = useState<ItemType[]>([])
@@ -107,12 +109,11 @@ const Aggregation: React.FC<ListProps> = () => {
 		fetchData();
 	}, []);
 
-	const SortedMonthTable = withSort( {Component: MonthTable, list: list, sortField:  "month"} );
 	return (
 		<div id="aggregation">
-			<SortedMonthTable />
-			<YearTable list={list} />
-			<SortTable list={list} />
+			{withSort({ Component: MonthTable, props: { list }, sortField: "month" })}
+			{withSort({ Component: YearTable, props: { list }, sortField: "year" })}
+			{withSort({ Component: SortTable, props: { list }, sortField: "date" })}
 		</div>
 	);
 }
