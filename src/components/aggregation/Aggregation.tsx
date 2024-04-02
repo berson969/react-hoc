@@ -83,7 +83,7 @@ const updateItemType = (item: ItemType): ItemType => {
 };
 
 
-const Aggregation: React.FC<ListProps> = () => {
+const Aggregation: React.FC = () => {
 	const  [list, setList] = useState<ItemType[]>([])
 
 	useEffect(() => {
