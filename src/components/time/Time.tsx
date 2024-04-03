@@ -40,7 +40,7 @@ const DateTimePretty: React.FC<DateTimeProps> = (props) => {
 const Video: React.FC<VideoType> = (props) =>  {
 	return (
 		<div className="video">
-			<iframe src={props.url}  allow="autoplay; encrypted-media"></iframe>
+			<iframe src={props.url} allowFullScreen={true} allow="autoplay; encrypted-media"></iframe>
 			<DateTimePretty date={props.date} />
 		</div>
 	)
@@ -50,7 +50,7 @@ interface VideoListProps {
 }
 
 const VideoList: React.FC<VideoListProps> = (props) =>  {
-	return props.list.map((item: VideoType) => <Video url={item.url} date={item.date} />);
+	return props.list.map((item: VideoType, index: number) => <Video key={index} url={item.url} date={item.date} />);
 }
 
 const Time: React.FC = () => {
